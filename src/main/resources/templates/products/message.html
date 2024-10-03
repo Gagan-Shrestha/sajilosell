@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<!-- Main Container -->
+<div class="flex justify-center min-h-screen py-6">
+    <div class="bg-white shadow-lg rounded-lg w-full max-w-3xl mx-4 md:mx-6 lg:mx-8 p-6">
+        <!-- Header Section -->
+        <header class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
+            <h1 class="text-lg font-bold text-gray-800">Your Conversations</h1>
+            <a href="/products"
+               class="text-sm font-medium text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                &larr; Back to Dashboard
+            </a>
+        </header>
+
+        <!-- Conversation List -->
+        <ul class="space-y-4">
+            <th:block th:each="messageUser : ${messageUsers}">
+                <li class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-100 transition duration-150 ease-in-out">
+                    <!-- User Avatar Icon (Placeholder) -->
+                    <div class="bg-blue-100 text-blue-600 rounded-full w-10 h-10 flex items-center justify-center mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A11.037 11.037 0 0112 15a11.037 11.037 0 016.879 2.804M9 10a3 3 0 106 0 3 3 0 00-6 0z" />
+                        </svg>
+                    </div>
+
+                    <!-- User Email and Link -->
+                    <div class="flex-1">
+                        <a th:href="@{/products/message/{senderId}(senderId=${messageUser.id})}"
+                           class="block text-base font-medium text-gray-800 hover:text-blue-600 transition"
+                           th:text="${messageUser.email}">User Email</a>
+                    </div>
+
+
+                </li>
+            </th:block>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-6 text-center">Product List</h1>
+    <a href="/products"
+       class="text-sm font-medium text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+        &larr; Back to Dashboard
+    </a>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead class="bg-gray-800 text-white">
+            <tr>
+                <th class="py-2 px-4 text-left text-xs font-semibold uppercase">ID</th>
+                <th class="py-2 px-4 text-left text-xs font-semibold uppercase">Name</th>
+                <th class="py-2 px-4 text-left text-xs font-semibold uppercase">Brand</th>
+                <th class="py-2 px-4 text-left text-xs font-semibold uppercase">Category</th>
+                <th class="py-2 px-4 text-left text-xs font-semibold uppercase">Price</th>
+                <th class="py-2 px-4 text-left text-xs font-semibold uppercase">Description</th>
+                <th class="py-2 px-4 text-left text-xs font-semibold uppercase">Image</th>
+                <th class="py-2 px-4 text-left text-xs font-semibold uppercase">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}" class="border-b hover:bg-gray-50">
+                <td class="py-2 px-4 text-sm" th:text="${product.id}"></td>
+                <td class="py-2 px-4 text-sm" th:text="${product.name}"></td>
+                <td class="py-2 px-4 text-sm" th:text="${product.brand}"></td>
+                <td class="py-2 px-4 text-sm" th:text="${product.category}"></td>
+                <td class="py-2 px-4 text-sm" th:text="${product.price}"></td>
+                <td class="py-2 px-4 text-sm truncate" th:text="${product.description}"></td>
+                <td class="py-2 px-4">
+                    <img th:src="@{/products/image/{id}(id=${product.id})}" alt="Product Image" class="w-16 h-16 object-cover">
+                </td>
+                <td class="py-2 px-4 text-sm">
+                    <a th:href="@{/products/edit/{id}(id=${product.id})}" class="text-blue-500 hover:text-blue-700 mr-2">Edit</a>
+                    <a th:href="@{/products/delete/{id}(id=${product.id})}" class="text-red-500 hover:text-red-700"
+                       onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+</html>

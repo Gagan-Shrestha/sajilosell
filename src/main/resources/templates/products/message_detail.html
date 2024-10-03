@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages with User</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+<!-- Main Container -->
+<div class="w-full max-w-2xl bg-white rounded-lg shadow-xl">
+    <!-- Back Button -->
+    <div class="p-4 border-b">
+        <a href="/products"
+           class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ease-in-out">
+            &larr; Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Messages Section -->
+    <div class="p-6">
+        <h1 class="text-sm font-semibold text-center mb-6 text-gray-800">
+            Messages with <span class="text-blue-600" th:text="${sender.email}"></span>
+        </h1>
+
+        <!-- Conversation List -->
+        <ul class="space-y-4">
+            <th:block th:each="message : ${messages}">
+                <li class="flex flex-col">
+                    <div class="p-4 rounded-lg shadow-sm max-w-lg"
+                         th:classappend="${message.sender.id} == ${user.id} ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 text-gray-800 self-start'">
+                        <p class="font-medium text-sm" th:text="${message.message}"></p>
+                        <p class="text-xs text-gray-300 mt-1" th:text="${message.timestamp}"></p>
+
+                        <!-- Show Delete Button Only for the Sender or Receiver -->
+                        <th:block th:if="${message.sender.id == user.id }">
+                            <form th:action="@{/products/message/delete/{messageId}(messageId=${message.id})}" method="POST" class="mt-2">
+                                <input type="hidden" name="senderId" th:value="${sender.id}">
+                                <button type="submit" class="text-xs text-white hover:underline">Delete</button>
+                            </form>
+                        </th:block>
+                    </div>
+                </li>
+            </th:block>
+        </ul>
+
+        <!-- Reply Form -->
+        <div class="mt-6 border-t pt-4">
+            <form th:action="@{/products/message/reply}" method="POST" class="flex items-center w-full space-x-3">
+                <input type="hidden" name="senderId" th:value="${sender.id}" />
+                <input type="hidden" name="productId" th:value="${messages[0].product.id}" />
+
+                <input type="text" name="replyMessage" placeholder="Type your message..."
+                       class="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ease-in-out text-sm"
+                       required>
+
+                <button type="submit"
+                        class="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ease-in-out">
+                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                        <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

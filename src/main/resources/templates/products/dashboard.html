@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base::parent(~{::#content},~{::title},~{::script})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.4/dist/tailwind.min.css" rel="stylesheet">
+
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+
+<div id="content" class="w-full">
+
+<div class="hidden md:block sticky top-0 z-50 bg-gradient-to-r from-blue-500 to-indigo-500 p-4 rounded-b-lg shadow-lg">
+    <!-- Sticky Header UI -->
+    <div class=" flex items-center justify-between">
+        <!-- Logo -->
+        <div class="flex-shrink-0 ">
+            <img src="/css/images/logo1.png" class="sm:w-8 sw-h-8 w-16 h-16 md:w-20 md:h-20 rounded-full" alt="Logo">
+        </div>
+
+        <!-- User Greeting -->
+        <div class="text-center flex-1">
+            <p class="text-sm font-semibold text-white"><span th:text="${user.username}"></span></p>
+        </div>
+
+        <!-- Nepal Flag -->
+        <div class="flex-shrink-0">
+            <img src="/css/images/nepal.gif" class="w-14 h-14 md:w-20 md:h-20 rounded-lg" alt="Nepal Flag">
+        </div>
+    </div>
+</div>
+
+<!--   small size screen-->
+    <div class=" block md:hidden flex text-center justify-center ">
+        <p class="text-xs text-center font-semibold "><span th:text="${user.username}"></span></p>
+    </div>
+    <section class="relative h-auto flex items-center justify-center lg:-mt-4 py-8">
+        <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 px-6">
+            <!-- Left Column: Text with Background -->
+            <div class="bg-gradient-to-r from-blue-800 to-purple-800 p-8 rounded-lg shadow-xl flex flex-col justify-center">
+                <!-- Welcome Heading -->
+                <h1 class="text-2xl font-extrabold text-white mb-4 text-center lg:text-left leading-tight">
+                    Welcome to <span class="text-yellow-300">SajiloSello</span>
+                </h1>
+
+                <!-- Subheading with dynamic styles -->
+                <h2 class="text-lg font-medium text-indigo-200 mb-6 text-center lg:text-left animate-bounce">
+                    Hello, Namaste!
+                </h2>
+
+                <!-- Short Description -->
+                <p class="text-base font-light text-gray-200 mb-8 leading-relaxed max-w-lg text-center lg:text-left">
+                    <span class="text-yellow-200 font-bold">SajiloSello</span> is your go-to platform for buying and selling second-hand products effortlessly and securely. Join our trusted community and enjoy a seamless experience.
+                </p>
+
+                <!-- CTA Button -->
+                <div class="text-center lg:text-left">
+                    <a href="#" class="bg-yellow-400 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-yellow-500 transition duration-300 ease-in-out">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column: Image with White Background -->
+            <div class="hidden md:block bg-white p-6 rounded-lg shadow-lg flex justify-center items-center">
+                <img src="/css/images/buyandsell2.jpg" class="w-80 h-80 object-cover rounded-lg" alt="Buy and Sell Image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Form and Filter Button -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-10 sm:mt-4">
+        <div class="w-full sm:w-1/2 lg:w-1/2">
+            <form th:action="@{/products}" method="get" class="flex flex-col sm:flex-row items-center gap-4">
+                <input type="search" name="query" th:value="${query}" class="mt-1 shadow-xs block w-full rounded-lg border-gray-200 px-3 py-2 ps-9 text-xs focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 dark:focus:ring-gray-600 mb-2" placeholder="Search for products..." autofocus>
+                <button type="submit" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-white rounded-lg md:w-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    Search
+                </button>
+            </form>
+        </div>
+        <div class="relative w-full sm:w-full lg:w-3/5 text-left">
+            <div>
+                <button type="button" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-white rounded-lg md:w-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" id="dropdownButton">
+                    Filter by Price
+                </button>
+            </div>
+            <!-- Dropdown Menu -->
+            <div class="absolute mt-2 w-full sm:w-full lg:w-80 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden" id="dropdownMenu">
+                <div id="price-filter" class="p-4">
+                    <form th:action="@{/products}" method="get" class="space-y-4">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="w-full">
+                                <label for="minPrice" class="block text-sm font-medium text-gray-700">Min Price</label>
+                                <input type="number" name="minPrice" th:value="${minPrice}" class="mt-1 shadow-xs block w-full rounded-lg border-gray-200 px-3 py-2 text-xs dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400" placeholder="300">
+                            </div>
+                            <div class="w-full">
+                                <label for="maxPrice" class="block text-sm font-medium text-gray-700">Max Price</label>
+                                <input type="number" name="maxPrice" th:value="${maxPrice}" class="mt-1 shadow-xs block w-full rounded-lg border-gray-200 px-3 py-2 text-xs dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400" placeholder="3500">
+                            </div>
+                        </div>
+                        <div class="flex justify-center">
+                            <button type="submit" class="flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-white rounded-lg md:w-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Apply Filter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product List -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-6">
+        <div th:each="product : ${products}" class="w-full max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg rounded-lg border-2 border-[#5979ba] flex flex-col bg-white dark:bg-gray-800 h-96">
+            <div class="w-full flex justify-center p-4">
+                <img class="w-32 h-32 object-cover" th:src="@{/products/image/{id}(id=${product.id})}" alt="Product Image">
+            </div>
+            <div class="px-6 py-4 flex-1">
+                <div class="font-bold text-sm font-medium mb-2 text-center uppercase" th:text="${product.name}"></div>
+
+                <div class="font-medium text-xs mb-2" th:text="${product.price}"></div>
+                <div class="text-xs font-medium mb-2" th:text="${product.contact}"></div>
+                <div class="text-xs font-medium mb-2" th:text="${product.address}"></div>
+                <div class="text-xs font-medium mb-2" th:text="${product.description}"></div>
+            </div>
+            <div class="px-6 py-4 flex justify-end">
+                <a th:href="@{/products/chat/{id}(id=${product.id})}" class="text-blue-500 dark:text-blue-300 hover:underline">Chat</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-8">
+        <nav class="flex justify-center">
+            <ul class="inline-flex space-x-2">
+                <li th:if="${currentPage > 0}">
+                    <a th:href="@{/products/(page=${currentPage - 1}, size=${size})}" class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Previous</a>
+                </li>
+                <li th:if="${currentPage == 0}">
+                    <span class="px-3 py-2 bg-gray-300 text-gray-500 rounded">Previous</span>
+                </li>
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/products(page=${i}, size=${size})}" th:classappend="${i == currentPage} ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-2 rounded hover:bg-gray-300" th:text="${i + 1}">1</a>
+                </li>
+                <li th:if="${currentPage < totalPages - 1}">
+                    <a th:href="@{/products(page=${currentPage + 1}, size=${size})}" class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Next</a>
+                </li>
+                <li th:if="${currentPage >= totalPages - 1}">
+                    <span class="px-3 py-2 bg-gray-300 text-gray-500 rounded">Next</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <footer class="bg-gray-800 text-gray-200 py-6 mt-6">
+        <div class="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Column 1: Website Info -->
+            <div class="flex flex-col">
+                <h3 class="text-xl font-extrabold text-yellow-300 mb-2 tracking-wide">SajiloSello</h3>
+                <p class="text-sm italic text-gray-400 leading-relaxed">
+                    Your trusted platform for buying and selling second-hand products with ease.
+                </p>
+            </div>
+
+            <!-- Column 2: Contact Info -->
+            <div class="flex flex-col">
+                <h3 class="text-xl font-extrabold text-yellow-300 mb-2 tracking-wide">Contact Info</h3>
+                <p class="text-sm font-light">
+                    <span class="font-semibold text-yellow-400">Made by:</span> Gagan Shrestha
+                </p>
+                <p class="text-sm font-light">
+                    <span class="font-semibold text-yellow-400">Email:</span> gaganshresthabicte@gmail.com
+                </p>
+                <p class="text-sm font-light">
+                    <span class="font-semibold text-yellow-400">Contact No:</span> 9816747684
+                </p>
+                <p class="text-sm font-light">
+                    <span class="font-semibold text-yellow-400">Semester:</span> BICTE, 5th Semester
+                </p>
+            </div>
+        </div>
+        <div class="text-center text-gray-400 text-xs mt-6">
+            &copy; 2024 <span class="text-yellow-300 font-semibold">SajiloSello</span>. All rights reserved.
+        </div>
+    </footer>
+
+
+</div>
+
+</body>
+</html>
